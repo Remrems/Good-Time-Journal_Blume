@@ -80,22 +80,12 @@ function draw() {
     background(255, 0, 0);
     return;
   } else {
-    background(255);
+    background(200);
   }
   for (var i = 0; i < data.length; i++) {
-    var d = data[i];
-    var x = 100;
-    var y = dateScale(d.date) +100;
-    var color = colorScale(d.activities);
-    //console.log(start + ',' + end);
-    fill(color);
-    rect(start + 200, y, end-start, 6);
+
   }
 
 
-fill('black');
-    textAlign(LEFT);
-    textSize(12);
-    text(d, 300, y + 400);
 
   }
