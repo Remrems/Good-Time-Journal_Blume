@@ -8,11 +8,18 @@ var colorScale = d3.scaleOrdinal();
 var activitesScale = d3.scalePoint();
 var activities = [];
 
+var flowerPetal;
+
+function preload() {
+  flowerPetal = loadImage('blumenblatt.png');
+}
 
 
 function setup() {
-  createCanvas(600, 600);
 
+  createCanvas(800, 600);
+
+  console.log(flowerPetal);
 
   noLoop();
 
@@ -56,7 +63,7 @@ function setup() {
 
 
     activitesScale.domain(activities).range([100, 900]);
-
+    console.log(activities);
     console.log("amount activities" + " " + activities.length);
 
     colorScale.domain(activities)
@@ -80,41 +87,53 @@ function draw() {
     background(255, 0, 0);
     return;
   } else {
-    background(200);
-  }
-  for (var i = 0; i < data.length; i++) {
-
+    background(255);
   }
 
-  drawFlower(width/2,height/2,100,4,2,5,'asdf');
+  var energy = 4;
+  var mood = 4;
+  var engagement = 5;
+  var activity = 'music';
+  drawFlower(200, 200, 80, energy, mood, engagement, activity);
 
 }
 
+function drawFlower(x, y, radius, energy, mood, engagement, activity) {
 
-function drawFlower(x,y,radius,energy, mood, engagement, activity){
+  //draw flower petals
+  var anglePerPetal = 360 / 5;
+  var flowerMaxWidth = 0.6 * radius;
+  var flowerMinWidth = flowerMaxWidth / 5;
+  var flowerWidth = round(map(energy, 1, 5, flowerMinWidth, flowerMaxWidth));
+  var flowerHeight = round((flowerPetal.height / flowerPetal.width) * flowerWidth);
 
-  // var scaleDotAngle = d3.scaleLinear()
-  //   .domain([0,10])
-  //   .range([0,360]);
-
-  
+  for (let i = 0; i < mood; i++) {
+    var angle = i * anglePerPetal;
+    push();
+    translate(x, y);
+    rotate(radians(angle));
+    var col = colorScale(activity);
+    tint(col);
+    image(flowerPetal, 0, 0, flowerWidth, flowerHeight);
+    pop();
+  }
 
   //draw engagement dots
   push();
-  translate(x,y);
-  var angleBetweenDots = 360/10;
-  var dotRadius = radius/20;
+  translate(x, y);
+  var angleBetweenDots = 360 / 10;
+  var dotRadius = radius / 10;
   console.log(angleBetweenDots);
   for (var i = 0; i < engagement; i++) {
-    var angle = i*angleBetweenDots;
+    var angle = i * angleBetweenDots;
     console.log(angle);
     var v = p5.Vector.fromAngle(radians(angle), radius);
 
     noStroke();
     fill('black');
-    ellipse(v.x,v.y,dotRadius,dotRadius);
+    ellipse(v.x, v.y, dotRadius, dotRadius);
   }
   pop();
-  
+
 
 }
