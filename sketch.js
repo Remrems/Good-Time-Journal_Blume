@@ -93,8 +93,12 @@ function draw() {
   var mood = 4;
   var engagement = 5;
   var activity = 'music';
+
+  //draw a flower
   drawFlower(200, 200, 80, energy, mood, engagement, activity);
 
+  //draw another flower
+  drawFlower(400, 200, 80, 3, 4, 8, 'work');
 
 }
 
