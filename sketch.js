@@ -95,6 +95,7 @@ function draw() {
   var activity = 'music';
   drawFlower(200, 200, 80, energy, mood, engagement, activity);
 
+
 }
 
 function drawFlower(x, y, radius, energy, mood, engagement, activity) {
