@@ -21,7 +21,7 @@ function preload() {
 
 function setup() {
 
-  createCanvas(10000, 5000);
+  createCanvas(6000, 6500);
 
   // console.log(flowerPetal);
 
@@ -117,7 +117,6 @@ function draw() {
     var x = hourScale(data[i].hour);
     // var x = 200 * i + 100;
     var y = dayScale(data[i].date) + 100;
-
 
     //draw a flower
     drawFlower(x, y, 80, energy, mood, engagement, activity);
