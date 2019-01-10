@@ -14,18 +14,17 @@ var star;
 
 function preload() {
   flowerPetal = loadImage('blumenblatt.png');
-    star = loadImage('stern.png')
-
+  star = loadImage('stern.png')
+  flowerPetalBorder = loadImage('blumenblatt_rand.png');
 }
 
 
 function setup() {
 
   createCanvas(6000, 6500);
-
-  // console.log(flowerPetal);
-
   noLoop();
+  pixelDensity(2);
+
 
   d3.csv("GTJ.csv", function (d, i) { //d geht jede einzelne Zeile durch. D= Array
 
@@ -41,7 +40,7 @@ function setup() {
       moodlevel: +d.Moodlevel,
       alcohol: d.Alcohol,
       objects: d.Objects,
-      people: d.People,
+      people: d.People.toLowerCase(),
       names: d.Namesofusers,
       engagement: +d.Engagement
     };
@@ -87,12 +86,12 @@ function setup() {
 
     colorScale.domain(activities)
     .range(['#ff93ab',  '#94c3af', '#155a3c', '#ffb745', '#6a002b',
-    '#138d90', '#001871', '#43bcff', '#ffb743', '#e95b4f', '#660033',
-    '#a4e46b', '#fb6f62', '#f69454', '#24978d', '#01796f', '#990033',
-    '#cb2636', '#a7dbce', '#6abf5a', '#ff8b27', '#d2ac7d', '#890029',
-    '#79b120', '#ca326b', '#f3b0d0', '#A37AA5', '#e15a53','#bc7568',
-    '#4c8cb5', '#de937c', '#374873', '#86b872', '#a76767', '#67709c',
-    '#85b881', '#b2769d', '#8f6aa1', '#8ee5ee', '#009688', '#ff7878']);
+      '#138d90', '#001871', '#43bcff', '#85b881', '#b2769d', '#8f6aa1', '#8ee5ee',
+  '#009688', '#fb6f62', '#f69454', '#8b0000', '#01796f', '#990033',
+      '#cb2636', '#a7dbce', '#6abf5a', '#ff8b27', '#138d90', '#890029',
+       '#79b120', '#ca326b', '#f3b0d0', '#A37AA5', '#e15a53','#bc7568',
+      '#4c8cb5',  '#43bcff', '#374873', '#86b872', '#a76767', '#67709c'
+      ]);
 
 
     redraw();
@@ -106,7 +105,8 @@ function draw() {
     background(255, 0, 0);
     return;
   } else {
-    background(255);
+    // background(255);
+    clear();
   }
 
   for (var i = 0; i < data.length; i++) {
@@ -114,18 +114,28 @@ function draw() {
     var mood = data[i].moodlevel;
     var engagement = data[i].engagement;
     var activity = data[i].activities;
+    var people = data[i].people;
     var x = hourScale(data[i].hour);
     // var x = 200 * i + 100;
     var y = dayScale(data[i].date) + 100;
 
-    //draw a flower
-    drawFlower(x, y, 80, energy, mood, engagement, activity);
-    // drawFlower(x, 128, 80, energy, mood, engagement, activity);
+    if (people == "alone") {
+    var alone = true;
+    } else {
+    var alone = false;
+    }
 
+
+    //draw a flower
+    drawFlower(x, y, 80, energy, mood, engagement, activity, alone);
   }
+
+
+
+
 }
 
-function drawFlower(x, y, radius, energy, mood, engagement, activity) {
+function drawFlower(x, y, radius, energy, mood, engagement, activity, alone) {
 
   //draw flower petals
   var anglePerPetal = 360 / 5;
@@ -140,8 +150,27 @@ function drawFlower(x, y, radius, energy, mood, engagement, activity) {
     translate(x, y);
     rotate(radians(angle));
     var col = colorScale(activity);
+    // tint(col);
+    // image(flowerPetal, 0, 0, flowerWidth, flowerHeight);
+
+
+    if (!alone) {
     tint(col);
     image(flowerPetal, 0, 0, flowerWidth, flowerHeight);
+
+    tint(255, 127);
+    image(flowerPetal, 0, 0, flowerWidth*0.4, flowerHeight*0.4);
+    // tint(col);
+    // image(flowerPetal, 0, 0, flowerWidth*1.15, flowerHeight*1.15);
+    // tint(255, 127);
+    // image(flowerPetal, 0, 0, flowerWidth, flowerHeight);
+
+  } else {
+    tint(col);
+    image(flowerPetal, 0, 0, flowerWidth, flowerHeight);
+
+  }
+
     pop();
   }
 
@@ -167,5 +196,12 @@ function drawFlower(x, y, radius, energy, mood, engagement, activity) {
   }
   pop();
 
+
+}
+function keyPressed(){
+  if (key == 's'){
+    saveCanvas('Flowers', 'png');
+
+  }
 
 }
